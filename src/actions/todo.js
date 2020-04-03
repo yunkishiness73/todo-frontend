@@ -15,7 +15,7 @@ export const fetchTodoList = () => {
     return dispatch => {
         TodoService.getAll()
             .then(res => {
-                if (res.status == StatusCode.SUCCESS || res.status == StatusCode.NO_CONTENT) {
+                if (res.status === StatusCode.SUCCESS || res.status === StatusCode.NO_CONTENT) {
                     dispatch(fetchTodoListSuccess(res.data));
                 }
             })
@@ -31,17 +31,45 @@ export const updateTodo = (todo) => {
     return dispatch => {
         TodoService.update(id, isCompleted)
                     .then(res => {
-                        if (res.status == StatusCode.SUCCESS || res.status == StatusCode.NO_CONTENT) {
+                        if (res.status === StatusCode.SUCCESS || res.status === StatusCode.NO_CONTENT) {
                             return TodoService.getAll();
                         }
                     })
                     .then(res2 => {
-                        if (res2.status == StatusCode.SUCCESS || res2.status == StatusCode.NO_CONTENT) {
+                        if (res2.status === StatusCode.SUCCESS || res2.status === StatusCode.NO_CONTENT) {
                             dispatch(fetchTodoListSuccess(res2.data));
                         }
                     })
                     .catch(err => {
                         console.log(err)
+                    })
+    }
+}
+
+export const addTodo = task => {
+    return dispatch => {
+        TodoService.create(task)
+                    .then(res => {
+                        if (res.status === StatusCode.SUCCESS || res.status === StatusCode.NO_CONTENT) {
+                            dispatch(fetchTodoList());
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+    }
+}
+
+export const deleteTodo = id => {
+    return dispatch => {
+        TodoService.removeTodo(id)
+                    .then(res => {
+                        if (res.status === StatusCode.SUCCESS || res.status === StatusCode.NO_CONTENT) {
+                            dispatch(fetchTodoList());
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
                     })
     }
 }

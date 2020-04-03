@@ -53,7 +53,7 @@ class TodoService extends BaseService {
         });
     }
 
-    delete(id) {
+    removeTodo(id) {
         let endpoint = '';
 
         if (id) {
